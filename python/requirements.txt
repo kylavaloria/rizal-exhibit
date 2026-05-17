@@ -18,7 +18,7 @@ safetensors
 evaluate
 sacrebleu
 bert_score
-unbabel-comet
+unbabel-comet>=2.2.0
 
 # Utilities
 numpy
