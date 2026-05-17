@@ -96,7 +96,16 @@ python download_models.py
 
 *Wait for all downloads to finish. You should see a success message when it is complete.*
 
-### Step 5: Run the Server Offline
+
+
+### Step 5: Install Next js
+
+```bash
+npm install
+
+```
+
+### Step 6: Run the Server Offline
 
 Once the base models are safely cached, you can completely disable your internet connection. The app is configured with strict offline environment variables.
 
@@ -104,14 +113,6 @@ Start the FastAPI server:
 
 ```bash
 python app.py
-
-```
-
-
-### Step 6: Install Next js
-
-```bash
-npm install
 
 ```
 
