@@ -13,6 +13,7 @@ transformers
 peft
 huggingface-hub
 safetensors
+sacremoses
 
 # Evaluation Metrics
 evaluate
