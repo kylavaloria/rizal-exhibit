@@ -1,0 +1,24 @@
+# Core Web/API Framework
+fastapi
+uvicorn
+pydantic
+
+# Machine Learning & Tensors (Must be >= 2.6.0 for torch.load security bypass)
+torch>=2.6.0
+torchvision
+torchaudio
+
+# Hugging Face Ecosystem
+transformers
+peft
+huggingface-hub
+safetensors
+
+# Evaluation Metrics
+evaluate
+sacrebleu
+bert_score
+unbabel-comet
+
+# Utilities
+numpy
