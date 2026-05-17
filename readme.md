@@ -51,8 +51,8 @@ Follow these steps to set up the project on your machine after cloning from GitH
 ### Step 1: Clone the Repository
 Open your terminal and clone the repository to your local machine:
 ```bash
-git clone ...
-cd ...
+git clone https://github.com/jimbarcos/rizal-exhibit
+cd rizal-exhibit
 
 ```
 
@@ -64,10 +64,12 @@ It is highly recommended to use Python 3.10+ and create a virtual environment so
 
 ```bash
 # Windows
+cd python
 python -m venv venv
 venv\Scripts\activate
 
 # Mac/Linux
+dir python
 python3 -m venv venv
 source venv/bin/activate
 
@@ -98,14 +100,14 @@ python download_models.py
 
 
 
-### Step 5: Install Next js
+### Step 5: Install Next js (Go to root /rizal-exhibit)
 
 ```bash
 npm install
 
 ```
 
-### Step 6: Run the Server Offline
+### Step 6: Run the Server Offline (Go to /python)
 
 Once the base models are safely cached, you can completely disable your internet connection. The app is configured with strict offline environment variables.
 
@@ -116,7 +118,7 @@ python app.py
 
 ```
 
-### Step 7: Run Next js
+### Step 7: Run Next js (Run this on different terminal with the root on /rizal-exhibit)
 
 ```bash
 npm run dev
