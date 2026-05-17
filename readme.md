@@ -38,46 +38,101 @@ To ensure this application runs smoothly without an active internet connection, 
 
 ## Deployment & Setup Instructions
 
-### 1. Install Backend Dependencies
+This project implements a FastAPI server that serves a baseline translation model (`Helsinki-NLP/opus-mt-tl-en`) alongside two custom LoRA adapters (`normalized` and `old` Tagalog). It also integrates advanced translation evaluation metrics (BLEU, chrF, BERTScore, and COMET) for interactive scoring.
 
-Install the required Python packages using the provided `requirements.txt` file. Using `python -m pip` ensures the packages are installed in your exact active Python environment.
+Because this application is designed to run in a **completely offline environment**, specific caching and dependency configurations have been established to prevent network timeouts and security blocks.
+
+---
+
+## How to Run This Project Locally
+
+Follow these steps to set up the project on your machine after cloning from GitHub.
+
+### Step 1: Clone the Repository
+Open your terminal and clone the repository to your local machine:
+```bash
+git clone ...
+cd ...
+
+```
+
+*(Note: The custom LoRA adapters are already included in this repository, so you do not need to download them separately.)*
+
+### Step 2: Set Up a Python Environment (Recommended)
+
+It is highly recommended to use Python 3.10+ and create a virtual environment so these specific dependencies don't interfere with your other projects.
+
+```bash
+# Windows
+python -m venv venv
+venv\Scripts\activate
+
+# Mac/Linux
+python3 -m venv venv
+source venv/bin/activate
+
+```
+
+### Step 3: Install Dependencies
+
+Install the required packages using the provided `requirements.txt` file.
+*Note: This will install PyTorch 2.6.0+, which is strictly required to bypass a recent PyTorch security vulnerability block (CVE-2025-32434) when loading local model files.*
 
 ```bash
 python -m pip install -r requirements.txt
 
 ```
 
-### 2. Cache the Models (Requires Temporary Internet Access)
+### Step 4: Cache the Base Models (Requires Temporary Internet Access)
 
-Before running the application offline, you **must** download the base models, tokenizers, and evaluation metrics into your local Hugging Face cache (`~/.cache/huggingface/`).
+While the custom LoRA adapters are included in the repo, the massive Hugging Face base models, tokenizers, and evaluation metrics need to be downloaded to your machine's local cache (`~/.cache/huggingface/`).
 
-Ensure you are connected to the internet and run the caching script:
+Ensure you are connected to the internet and run the setup script:
 
 ```bash
 python download_models.py
 
 ```
 
-*Wait for all downloads to finish. You should see a confirmation message: "All models cached successfully!"*
+*Wait for all downloads to finish. You should see a success message when it is complete.*
 
-### 3. Run the Backend Server Offline
+### Step 5: Run the Server Offline
 
-Once the models are safely cached and PyTorch is updated, you can safely disable your internet connection. Start the FastAPI server:
+Once the base models are safely cached, you can completely disable your internet connection. The app is configured with strict offline environment variables.
+
+Start the FastAPI server:
 
 ```bash
 python app.py
 
 ```
 
-*The server will boot using Uvicorn, load the models locally, and become available at `http://localhost:8000`.*
 
-### 4. Run the Next.js Frontend
+### Step 6: Install Next js
 
-In a separate terminal instance, start the Next.js development server to interact with the exhibit UI:
+```bash
+npm install
+
+```
+
+### Step 7: Run Next js
 
 ```bash
 npm run dev
 
 ```
+
+The server will boot up using `uvicorn` and load the models locally. The API will be immediately available at:
+**`http://localhost:3000`**
+
+---
+
+## File Structure Overview
+
+* **`app.py`**: The main FastAPI application. Handles routing, model generation, LoRA adapter switching, and offline metric evaluation.
+* **`download_models.py`**: A one-time setup script utilized to fetch and cache all necessary Hugging Face base assets.
+* **`requirements.txt`**: The exact package dependencies required to run the environment safely.
+* **`rizal-lora-adapters-*/`**: The custom fine-tuned weights for the normalized and historical Tagalog translations.
+* **`leaderboard.json`**: A local JSON file (auto-generated on the first run) that persists the leaderboard scores.
 
 *The frontend will compile and be accessible at `http://localhost:3000`.*
