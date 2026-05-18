@@ -56,12 +56,14 @@ base_model = MarianMTModel.from_pretrained(
 print("Loading LoRA Adapters...")
 adapter_normalized = "rizal-lora-adapters-v3-final_normalized_tagalog"
 adapter_old = "rizal-lora-adapters-v3-final_old_tagalog"
+adapter_combined = "rizal-lora-adapters-v3-final_combined_tagalog"
 
 # 1. Wrap the base model with your first adapter and name it
 model = PeftModel.from_pretrained(base_model, adapter_normalized, adapter_name="normalized")
 
-# 2. Load the second adapter into the same model and name it
+# 2. Load the additional adapters into the same model and name them
 model.load_adapter(adapter_old, adapter_name="old")
+model.load_adapter(adapter_combined, adapter_name="combined")
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model.to(device)
@@ -85,8 +87,12 @@ async def translate_text(req: TranslationRequest):
     # 2. Generate Translation: Old Tagalog LoRA
     model.set_adapter("old")
     improved_old_output = generate_translation(req.text)
+
+    # 3. Generate Translation: Combined Tagalog LoRA
+    model.set_adapter("combined")
+    improved_combined_output = generate_translation(req.text)
     
-    # 3. Generate Translation: Baseline (Disable all adapters)
+    # 4. Generate Translation: Baseline (Disable all adapters)
     with model.disable_adapter():
         baseline_output = generate_translation(req.text)
         
@@ -94,7 +100,8 @@ async def translate_text(req: TranslationRequest):
         "source": req.text,
         "baseline": baseline_output,
         "improved_normalized": improved_normalized_output,
-        "improved_old": improved_old_output
+        "improved_old": improved_old_output,
+        "improved_combined": improved_combined_output
     }
 
 # --- GAME DATA & MODELS ---
@@ -197,14 +204,24 @@ async def evaluate_translation(req: EvaluationRequest):
     model.set_adapter("old")
     improved_old_text = generate_translation(req.source_text)
     improved_old_scores = calculate_metrics(improved_old_text, req.reference_text, req.source_text)
+
+    model.set_adapter("combined")
+    improved_combined_text = generate_translation(req.source_text)
+    improved_combined_scores = calculate_metrics(improved_combined_text, req.reference_text, req.source_text)
     
-    user_won = user_scores["comet"] > min(improved_norm_scores["comet"], improved_old_scores["comet"])
+    # User wins if they beat the highest scoring AI model
+    user_won = user_scores["comet"] > max(
+        improved_norm_scores["comet"], 
+        improved_old_scores["comet"],
+        improved_combined_scores["comet"]
+    )
     
     return {
         "user": user_scores,
         "baseline": base_scores,
         "improved_normalized": improved_norm_scores,
         "improved_old": improved_old_scores,
+        "improved_combined": improved_combined_scores,
         "user_won": user_won,
         "final_score": user_scores["comet"] * 100 
     }

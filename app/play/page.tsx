@@ -260,7 +260,7 @@ export default function PlayGame() {
                 )}
             </div>
 
-            {/* NEW: Ground Truth Source & Reference Box */}
+            {/* Ground Truth Source & Reference Box */}
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-xl border border-gray-200 shadow-sm grid md:grid-cols-2 gap-6 text-left">
                 <div className="bg-gray-50 p-4 rounded-lg border border-gray-100">
                     <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Tagalog Source</h3>
@@ -279,10 +279,11 @@ export default function PlayGame() {
               Metrics (COMET & BERTScore) were calculated by comparing translations against the Canonical Reference.
             </p>
 
-            {/* Score Cards - 4 Column Layout */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Score Cards - 5 Column Layout */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
                 {[
                 { title: "You", subtitle: "Human Input", data: results.user, color: "#eb1700", border: "border-[#eb1700] ring-1 ring-[#eb1700]/20" },
+                { title: "Combined Tagalog", subtitle: "Mixed Data LoRA", data: results.improved_combined, color: "#7c3aed", border: "border-purple-200" },
                 { title: "Normalized Tagalog", subtitle: "Preprocessed LoRA", data: results.improved_normalized, color: "#d97706", border: "border-amber-200" },
                 { title: "Raw Tagalog", subtitle: "Old Text LoRA", data: results.improved_old, color: "#2563eb", border: "border-blue-200" },
                 { title: "Baseline Model", subtitle: "Pretrained Opus-MT", data: results.baseline, color: "#4b5563", border: "border-gray-200" }
