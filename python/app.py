@@ -47,10 +47,10 @@ print("Loading Base Model...")
 model_checkpoint = "Helsinki-NLP/opus-mt-tl-en"
 tokenizer = MarianTokenizer.from_pretrained(model_checkpoint, local_files_only=True)
 
-# Remove use_safetensors=True so it doesn't try to auto-convert via the web
 base_model = MarianMTModel.from_pretrained(
-    model_checkpoint, 
-    local_files_only=True
+    model_checkpoint,
+    local_files_only=True,
+    use_safetensors=True
 )
 
 print("Loading LoRA Adapters...")
