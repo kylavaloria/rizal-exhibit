@@ -263,7 +263,7 @@ export default function PlayGame() {
             Can You Beat <span className="text-primary">Rizal?</span>
           </span>
           <span className="text-[13px] text-[#57423f]" style={garamond}>
-            → {STEP_LABELS[gameState]}
+            {STEP_LABELS[gameState]}
           </span>
         </div>
         <Link

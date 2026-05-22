@@ -1,8 +1,19 @@
 import Link from "next/link";
 import ScrollAnimator from "@/components/ScrollAnimator";
+import TypingHeading from "@/components/TypingHeading";
 
 // Shorthand so the inline style cast isn't repeated everywhere
 type CSSVars = React.CSSProperties & { "--animate-delay"?: string };
+
+const leftQuotes = [
+  "“Mamamatay akong hindi man lamang nakita ang maningning na pagbubukang-liwayway sa aking bayan!”",
+  "“Ang hindi marunong lumingon sa pinanggalingan ay hindi makararating sa paroroonan.”",
+  "“Sa itaas ng batas ay ang karapatan. Sa itaas ng tao ay ang katuwiran.”",
+];
+const rightQuotes = [
+  "“Ang karunungan ay para sa tao, ngunit huwag mong kalilimutang iyan ay nakukuha lamang ng mga may puso.”",
+  "“Panindigan ang karapatan at huwag hayaang yurakan ang dangal.”",
+];
 
 export default function Home() {
   return (
@@ -11,37 +22,72 @@ export default function Home() {
       <main className="max-w-[1100px] mx-auto px-5 md:px-16 py-16 md:py-24 space-y-24 md:space-y-32 relative z-10">
 
         {/* ── Hero ── */}
-        <section className="text-center max-w-3xl mx-auto space-y-8">
-          <h1 data-animate className="text-display-lg">
-            Can You Beat{" "}
-            <span className="text-primary-container italic">Rizal?</span>
-          </h1>
-          <p
-            data-animate
-            style={{ "--animate-delay": "90ms" } as CSSVars}
-            className="text-body-lg text-on-surface-variant max-w-2xl mx-auto"
-          >
-            We trained an AI to translate 19th-century Tagalog using the historical texts of José
-            Rizal. Can your human intuition outperform our specialized Neural Machine Translation
-            models?
-          </p>
-          <div
-            data-animate
-            style={{ "--animate-delay": "180ms" } as CSSVars}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
-          >
-            <Link
-              href="/play"
-              className="bg-primary-container text-on-primary px-8 py-3 text-label-sm uppercase tracking-wider hover:bg-on-primary-fixed-variant transition-colors ink-border shadow-sm"
+        <section className="relative w-full mx-auto overflow-hidden py-12 md:py-20 -my-12">
+
+          {/* Archival text — left */}
+          <div className="absolute left-0 top-0 bottom-0 w-[450px] hidden lg:block overflow-hidden pointer-events-none z-0">
+            <div className="flex h-full w-full">
+              <div className="w-32 overflow-hidden opacity-30 relative">
+                <div className="animate-marquee-down flex flex-col gap-6 text-on-surface-variant text-body-md text-justify pr-4 h-[200%] absolute bottom-0 w-full" style={{ animationDuration: "40s" }}>
+                  {[...leftQuotes, ...leftQuotes].map((q, i) => <p key={i}>{q}</p>)}
+                </div>
+              </div>
+              <div className="w-32 overflow-hidden opacity-[0.15] relative">
+                <div className="animate-marquee-down flex flex-col gap-8 text-on-surface-variant text-[16px] font-medium text-justify pr-3 h-[200%] absolute bottom-0 w-full" style={{ animationDuration: "55s" }}>
+                  {[...leftQuotes, ...leftQuotes].map((q, i) => <p key={i}>{q}</p>)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Archival text — right */}
+          <div className="absolute right-0 top-0 bottom-0 w-[450px] hidden lg:block overflow-hidden pointer-events-none z-0">
+            <div className="flex h-full w-full justify-end">
+              <div className="w-32 overflow-hidden opacity-[0.15] relative">
+                <div className="animate-marquee-up flex flex-col gap-8 text-on-surface-variant text-[16px] font-medium text-justify pl-3 h-[200%] absolute top-0 w-full" style={{ animationDuration: "55s" }}>
+                  {[...rightQuotes, ...rightQuotes].map((q, i) => <p key={i}>{q}</p>)}
+                </div>
+              </div>
+              <div className="w-32 overflow-hidden opacity-30 relative">
+                <div className="animate-marquee-up flex flex-col gap-6 text-on-surface-variant text-body-md text-justify pl-4 h-[200%] absolute top-0 w-full" style={{ animationDuration: "40s" }}>
+                  {[...rightQuotes, ...rightQuotes].map((q, i) => <p key={i}>{q}</p>)}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Center content */}
+          <div className="text-center max-w-3xl mx-auto space-y-8 relative z-10 px-8 py-4 bg-background/60 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none rounded-xl">
+            <h1 data-animate className="text-display-lg">
+              <TypingHeading />
+            </h1>
+            <p
+              data-animate
+              style={{ "--animate-delay": "90ms" } as CSSVars}
+              className="text-body-lg text-on-surface-variant max-w-2xl mx-auto"
             >
-              Start the Challenge
-            </Link>
-            <Link
-              href="/leaderboard"
-              className="bg-transparent text-secondary px-8 py-3 text-label-sm uppercase tracking-wider ink-border hover:bg-surface-container-low transition-colors shadow-sm"
+              We trained an AI to translate 19th-century Tagalog using the historical texts of José
+              Rizal. Can your human intuition outperform our specialized Neural Machine Translation
+              models?
+            </p>
+            <div
+              data-animate
+              style={{ "--animate-delay": "180ms" } as CSSVars}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
             >
-              View Leaderboard
-            </Link>
+              <Link
+                href="/play"
+                className="bg-primary-container text-on-primary px-8 py-3 text-label-sm uppercase tracking-wider hover:bg-on-primary-fixed-variant transition-colors ink-border shadow-sm"
+              >
+                Start the Challenge
+              </Link>
+              <Link
+                href="/leaderboard"
+                className="bg-transparent text-secondary px-8 py-3 text-label-sm uppercase tracking-wider ink-border hover:bg-surface-container-low transition-colors shadow-sm bg-background/80 md:bg-transparent"
+              >
+                View Leaderboard
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -108,7 +154,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex-1 bg-tertiary-fixed p-6 ink-border relative">
-                <div className="absolute -top-3 left-6 bg-surface px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
+                <div className="absolute -top-3 left-6 bg-tertiary-fixed px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
                   Normalized Tagalog
                 </div>
                 <p className="text-body-lg italic text-on-background mt-2">
@@ -179,7 +225,7 @@ export default function Home() {
             ].map(({ bg, icon, title, desc, delay }) => (
               <div
                 key={title}
-                data-animate
+                data-animate-x
                 style={{ "--animate-delay": delay } as CSSVars}
                 className="flex flex-col items-center text-center z-10 w-full md:w-1/4"
               >
@@ -194,8 +240,7 @@ export default function Home() {
         </section>
 
         {/* ── Translation Improvement ── */}
-        <section className="space-y-8 bg-surface-container-low -mx-5 md:-mx-16 px-5 md:px-16 py-16 md:py-24">
-          <div className="max-w-[1100px] mx-auto space-y-8">
+        <section className="space-y-8 py-12 ink-divider pb-24">
             <div data-animate className="space-y-4 max-w-2xl">
               <div className="text-label-sm text-secondary uppercase tracking-widest">
                 Translation Improvement
@@ -227,8 +272,8 @@ export default function Home() {
                   style={{ "--animate-delay": delay } as CSSVars}
                   className="flex flex-col md:flex-row gap-4 items-center"
                 >
-                  <div className="flex-1 bg-surface p-6 ink-border w-full relative">
-                    <div className="absolute -top-3 left-6 bg-surface px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
+                  <div className="flex-1 bg-surface-variant p-6 ink-border w-full relative">
+                    <div className="absolute -top-3 left-6 bg-surface-variant px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
                       Raw MT Output
                     </div>
                     <p className="text-body-md mt-2">{raw}</p>
@@ -237,7 +282,7 @@ export default function Home() {
                     arrow_right_alt
                   </span>
                   <div className="flex-1 bg-tertiary-fixed p-6 ink-border w-full relative">
-                    <div className="absolute -top-3 left-6 bg-surface px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
+                    <div className="absolute -top-3 left-6 bg-tertiary-fixed px-2 text-[10px] text-label-sm text-secondary uppercase tracking-wider">
                       Post-Processed
                     </div>
                     <p className="text-body-md mt-2">{fixed}</p>
@@ -245,7 +290,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
         </section>
 
         {/* ── Cultural Vocabulary ── */}
@@ -283,8 +327,7 @@ export default function Home() {
         </section>
 
         {/* ── Dataset Sources ── */}
-        <section className="space-y-8 bg-surface-container-low -mx-5 md:-mx-16 px-5 md:px-16 py-16 md:py-24">
-          <div className="max-w-[1100px] mx-auto space-y-8">
+        <section className="space-y-8 py-12 ink-divider pb-24">
             <div data-animate className="space-y-4 max-w-2xl">
               <div className="text-label-sm text-secondary uppercase tracking-widest">Dataset Sources</div>
               <h2 className="text-headline-lg-mobile md:text-headline-lg">
@@ -329,7 +372,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-          </div>
         </section>
 
         {/* ── Evaluation ── */}

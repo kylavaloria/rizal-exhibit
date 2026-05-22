@@ -132,6 +132,40 @@ body {
   color: var(--color-on-background);
 }
 
+
+/* ── Parchment noise overlay ── */
+.parchment-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+  mix-blend-mode: multiply;
+  z-index: 50;
+}
+
+/* ── Archival text marquee ── */
+@keyframes scrollUp {
+  0%   { transform: translateY(0); }
+  100% { transform: translateY(-50%); }
+}
+@keyframes scrollDown {
+  0%   { transform: translateY(-50%); }
+  100% { transform: translateY(0); }
+}
+.animate-marquee-up   { animation: scrollUp   40s linear infinite; }
+.animate-marquee-down { animation: scrollDown 40s linear infinite; }
+
+/* ── Typing cursor blink ── */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.typing-cursor {
+  height: 0.85em;
+  animation: blink 1s step-start infinite;
+}
+
 /* ── Scroll-triggered entrance animations ── */
 [data-animate] {
   opacity: 0;
@@ -145,4 +179,18 @@ body {
 [data-animate].visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+[data-animate-x] {
+  opacity: 0;
+  transform: translateX(-26px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--animate-delay, 0ms);
+}
+
+[data-animate-x].visible {
+  opacity: 1;
+  transform: translateX(0);
 }
