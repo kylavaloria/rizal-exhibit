@@ -192,7 +192,7 @@ export default function Home() {
 
           <div className="flex flex-col md:flex-row items-start justify-between gap-8 pt-8 relative">
             {/* line sits at pt-8 (32px) + half of h-20 (40px) = 72px from container top */}
-            <div className="hidden md:block absolute top-[72px] left-[10%] right-[10%] h-px bg-outline-variant z-0" />
+            <div data-animate-line className="hidden md:block absolute top-[72px] left-[10%] right-[10%] h-px bg-outline-variant z-0" />
             {[
               {
                 bg: "bg-secondary-container",
@@ -317,7 +317,7 @@ export default function Home() {
                 key={tl}
                 data-animate
                 style={{ "--animate-delay": delay } as CSSVars}
-                className="bg-surface-container p-6 ink-border flex flex-col justify-between h-32"
+                className="bg-surface-container p-6 ink-border flex flex-col justify-between h-32 transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
               >
                 <h4 className="text-body-lg italic text-primary-container">{tl}</h4>
                 <p className="text-caption text-on-surface-variant">{en}</p>
@@ -359,7 +359,7 @@ export default function Home() {
                   key={title}
                   data-animate
                   style={{ "--animate-delay": delay } as CSSVars}
-                  className="bg-surface p-6 ink-border flex items-start gap-6 shadow-sm"
+                  className="bg-surface p-6 ink-border flex items-start gap-6 shadow-sm transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
                 >
                   <div className={`w-16 h-20 ${bg} ink-border flex items-center justify-center shrink-0`}>
                     <span className="material-symbols-outlined text-secondary">menu_book</span>
@@ -398,7 +398,7 @@ export default function Home() {
                 key={name}
                 data-animate
                 style={{ "--animate-delay": delay } as CSSVars}
-                className="bg-surface-container p-6 ink-border text-center flex flex-col justify-center min-h-32"
+                className="bg-surface-container p-6 ink-border text-center flex flex-col justify-center min-h-32 transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
               >
                 <h4 className="text-body-lg font-medium">{name}</h4>
                 <p className="text-caption text-on-surface-variant mt-2">{desc}</p>

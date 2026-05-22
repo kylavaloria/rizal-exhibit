@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 export default function ScrollAnimator() {
   useEffect(() => {
-    const elements = document.querySelectorAll("[data-animate], [data-animate-x]");
+    const elements = document.querySelectorAll("[data-animate], [data-animate-x], [data-animate-line]");
 
     const observer = new IntersectionObserver(
       (entries) => {
