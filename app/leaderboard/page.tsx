@@ -39,51 +39,64 @@ export default function LeaderboardPage() {
       .finally(() => setLoading(false));
   }, [filter, currentWeek]);
 
-  return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+  const garamond = { fontFamily: "var(--font-garamond)" } as const;
 
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 px-5 sm:px-6 py-4 shrink-0">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center text-amber-500">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
-                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
-                <path d="M4 22h16" />
-                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
-                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
-                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
-              </svg>
-            </div>
-            <div>
-              <div className="text-[15px] font-medium text-gray-900">Leaderboard</div>
-              <div className="text-[12px] text-gray-500">Can You Beat Rizal?</div>
-            </div>
+  return (
+    <div className="min-h-screen bg-white flex flex-col" style={garamond}>
+
+      {/* ── Header ── */}
+      <header className="sticky top-0 z-10 bg-white border-b-4 border-primary px-6 sm:px-8 py-4 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2 text-[17px] text-[#3d332d]" style={garamond}>
+          <span>Can You Beat <span className="italic text-primary">Rizal?</span></span>
+          <span className="text-[#6b5c54] mx-1">→</span>
+          <span className="text-[#6b5c54] text-base">Leaderboard</span>
+        </div>
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-[13px] tracking-widest uppercase text-[#6b5c54] hover:text-[#3d332d] transition-colors"
+          style={garamond}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 14, fontVariationSettings: "'wght' 300" }}>close</span>
+          Exit game
+        </Link>
+      </header>
+
+      {/* ── Main ── */}
+      <main className="flex-1 py-12 px-4 sm:px-6 lg:px-8 w-full max-w-5xl mx-auto">
+
+        {/* Page header row */}
+        <div className="flex items-end justify-between mb-10 flex-wrap gap-4">
+          <div>
+            <h1 className="text-[40px] sm:text-[48px] text-[#3d332d] mb-1 leading-tight" style={garamond}>Leaderboard</h1>
+            <p className="text-[18px] text-[#6b5c54] italic" style={garamond}>Can You Beat Rizal?</p>
           </div>
           <Link
             href="/play"
-            className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-medium bg-[#C0392B] text-white hover:bg-[#a93226] transition-colors"
+            className="flex items-center gap-2 bg-primary text-white px-6 py-2.5 text-body-md font-medium hover:opacity-80 transition-opacity"
+            style={garamond}
           >
             Play again
+            <span className="material-symbols-outlined" style={{ fontSize: 16, fontVariationSettings: "'wght' 300" }}>arrow_forward</span>
           </Link>
         </div>
-      </header>
 
-      <div className="flex-1 px-4 sm:px-6 py-8">
-        <div className="max-w-3xl mx-auto space-y-5">
+        {/* Leaderboard container — dashed outer + solid inner */}
+        <div className="relative border border-dashed border-[#d2c1b3] bg-white p-6 md:p-10 mb-8">
+          {/* Inner decoration border */}
+          <div className="absolute inset-[4px] border border-[#d2c1b3] pointer-events-none" />
 
-          {/* Filter toggle */}
-          <div className="flex gap-1 bg-white border border-gray-100 rounded-lg p-1 w-fit">
+          {/* Tabs */}
+          <div className="flex border-b border-[#d2c1b3] mb-6">
             {(["week", "all"] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-4 py-1.5 rounded-md text-[13px] font-medium transition-colors ${
+                className={`text-body-md pb-2 mr-6 border-b-2 -mb-px transition-colors ${
                   filter === f
-                    ? "bg-[#C0392B] text-white"
-                    : "text-gray-600 hover:bg-gray-50"
+                    ? "text-primary border-primary font-medium"
+                    : "text-[#6b5c54] border-transparent hover:text-[#3d332d]"
                 }`}
+                style={garamond}
               >
                 {f === "week" ? "This week" : "All time"}
               </button>
@@ -91,106 +104,105 @@ export default function LeaderboardPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white border border-gray-100 rounded-xl overflow-hidden">
-            {/* Column headers */}
-            <div className="hidden sm:grid grid-cols-[36px_1fr_96px_68px_60px_60px_72px] gap-3 px-4 py-2.5 border-b border-gray-100 text-[10px] font-medium uppercase tracking-[0.07em] text-gray-400">
-              <div>#</div>
-              <div>Nickname</div>
-              <div>Source</div>
-              <div className="text-right">COMET</div>
-              <div className="text-right">BLEU</div>
-              <div className="text-right">chrF</div>
-              <div className="text-center">Beat AI?</div>
-            </div>
-
-            {loading ? (
-              <div className="py-14 text-center text-[14px] text-gray-400">Loading…</div>
-            ) : entries.length === 0 ? (
-              <div className="py-14 text-center">
-                <div className="text-[14px] text-gray-500">No scores yet</div>
-                <div className="text-[12px] text-gray-400 mt-1">Be the first to play!</div>
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-50">
-                {entries.map((entry) => {
-                  const isCurrentUser =
-                    userNickname.trim().length > 0 && entry.nickname === userNickname;
-                  return (
-                    <div
-                      key={entry.id}
-                      className={`px-4 py-3 text-[13px] ${
-                        isCurrentUser
-                          ? "bg-red-50 border-l-2 border-[#C0392B]"
-                          : "hover:bg-gray-50"
+          <div className="w-full overflow-x-auto bg-white border border-[#d2c1b3]">
+            <table className="w-full text-left border-collapse" style={garamond}>
+              <thead>
+                <tr className="bg-white border-b border-[#d2c1b3]">
+                  {["#", "Nickname", "Source", "COMET", "BLEU", "CHRF", "Beat AI?"].map((h, i) => (
+                    <th
+                      key={h}
+                      className={`py-4 px-6 font-medium text-[12px] tracking-[0.1em] uppercase text-[#6b5c54] ${
+                        i >= 3 && i <= 5 ? "text-right" : i === 6 ? "text-center" : ""
                       }`}
                     >
-                      {/* Desktop row */}
-                      <div className="hidden sm:grid grid-cols-[36px_1fr_96px_68px_60px_60px_72px] gap-3 items-center">
-                        <div className="font-medium text-gray-400 text-[12px]">#{entry.rank}</div>
-                        <div className="font-medium text-gray-900 truncate">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="text-[#3d332d] text-[18px]">
+                {loading ? (
+                  <tr>
+                    <td colSpan={7} className="py-14 text-center text-[16px] text-[#6b5c54]">Loading…</td>
+                  </tr>
+                ) : entries.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="py-14 text-center">
+                      <div className="text-[16px] text-[#6b5c54]">No scores yet</div>
+                      <div className="text-[14px] text-[#a89890] mt-1 italic">Be the first to play!</div>
+                    </td>
+                  </tr>
+                ) : (
+                  entries.map((entry) => {
+                    const isCurrentUser =
+                      userNickname.trim().length > 0 && entry.nickname === userNickname;
+                    return (
+                      <tr
+                        key={entry.id}
+                        className={`border-b border-[#e6d7ce] last:border-b-0 transition-colors ${
+                          isCurrentUser
+                            ? "bg-white border-l-[3px] border-l-primary"
+                            : "hover:bg-[rgba(255,255,255,0.4)]"
+                        }`}
+                      >
+                        <td className={`py-4 px-6 ${isCurrentUser ? "font-semibold text-primary" : "text-[#6b5c54]"}`}>
+                          #{entry.rank}
+                        </td>
+                        <td className="py-4 px-6 font-medium">
                           {entry.nickname}
                           {isCurrentUser && (
-                            <span className="ml-1.5 text-[10px] bg-red-100 text-[#C0392B] px-1.5 py-0.5 rounded-full font-medium">
+                            <span
+                              className="ml-2 text-[12px] bg-red-100 text-red-800 px-2 py-0.5 rounded-full"
+                              style={garamond}
+                            >
                               You
                             </span>
                           )}
-                        </div>
-                        <div className="text-gray-500 truncate text-[12px]">{entry.source}</div>
-                        <div className="text-right font-medium text-gray-900">
+                        </td>
+                        <td className="py-4 px-6 text-[#6b5c54] text-base italic">{entry.source}</td>
+                        <td className={`py-4 px-6 text-right font-semibold ${isCurrentUser ? "text-primary" : ""}`}>
                           {Number(entry.scores.comet).toFixed(3)}
-                        </div>
-                        <div className="text-right text-gray-600">
+                        </td>
+                        <td className="py-4 px-6 text-right">
                           {Number(entry.scores.bleu).toFixed(1)}
-                        </div>
-                        <div className="text-right text-gray-600">
+                        </td>
+                        <td className="py-4 px-6 text-right">
                           {Number(entry.scores.chrf).toFixed(1)}
-                        </div>
-                        <div className="flex justify-center">
+                        </td>
+                        <td className="py-4 px-6 text-center">
                           {entry.beatenAI ? (
-                            <span className="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+                            <span className="text-[12px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full" style={garamond}>
                               Yes
                             </span>
                           ) : (
-                            <span className="text-[11px] bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full font-medium">
+                            <span className="text-[12px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full" style={garamond}>
                               No
                             </span>
                           )}
-                        </div>
-                      </div>
+                        </td>
 
-                      {/* Mobile row */}
-                      <div className="sm:hidden flex items-center gap-3">
-                        <span className="text-[12px] font-medium text-gray-400 w-6 shrink-0">#{entry.rank}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-medium text-gray-900 truncate">{entry.nickname}</span>
-                            {isCurrentUser && (
-                              <span className="text-[10px] bg-red-100 text-[#C0392B] px-1.5 py-0.5 rounded-full font-medium">You</span>
-                            )}
-                            {entry.beatenAI ? (
-                              <span className="text-[10px] bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded-full font-medium">Beat AI</span>
-                            ) : null}
-                          </div>
-                          <div className="text-[11px] text-gray-500 mt-0.5">
-                            COMET {Number(entry.scores.comet).toFixed(3)} · {entry.source}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Footer nav */}
-          <div className="text-center">
-            <Link href="/" className="text-[13px] text-gray-500 hover:text-gray-700 transition-colors">
-              ← Return to home
-            </Link>
+                        {/* Mobile-only condensed view */}
+                      </tr>
+                    );
+                  })
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
-      </div>
+
+        {/* Footer */}
+        <div>
+          <Link
+            href="/"
+            className="flex items-center gap-2 text-[#6b5c54] hover:text-[#3d332d] transition-colors italic text-body-md"
+            style={garamond}
+          >
+            <span>←</span> Return to home
+          </Link>
+        </div>
+
+      </main>
     </div>
   );
 }
