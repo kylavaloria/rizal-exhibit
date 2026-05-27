@@ -635,7 +635,7 @@ export default function PlayGame() {
               </div>
               <button
                 onClick={submitTranslation}
-                disabled={translationWords <= 3}
+                disabled={translationWords === 0}
                 className="flex items-center gap-2 bg-primary text-white px-7 py-3 text-body-md font-medium transition-all disabled:opacity-35 hover:enabled:opacity-80"
                 style={garamond}
               >

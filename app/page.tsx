@@ -239,6 +239,55 @@ export default function Home() {
           </div>
         </section>
 
+        {/* ── Key Findings ── */}
+        <section className="space-y-8 bg-surface-container-low -mx-5 md:-mx-16 px-5 md:px-16 py-16 md:py-24">
+          <div className="max-w-[1100px] mx-auto space-y-12">
+            <div data-animate className="space-y-4 max-w-2xl">
+              <div className="text-label-sm text-secondary uppercase tracking-widest">Key Findings</div>
+              <h2 className="text-headline-lg-mobile md:text-headline-lg">
+                What our research showed
+              </h2>
+              <p className="text-body-md text-on-surface-variant">
+                Fine-tuning with LoRA on a combined dataset of Old and Normalized Tagalog produced
+                measurably better and more stable translations than any single-dataset approach.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  icon: "low_priority",
+                  title: "< 1% of parameters trained",
+                  body: "LoRA fine-tunes only low-rank adapters, leaving the base model frozen. Full retraining was never required.",
+                  delay: "0ms",
+                },
+                {
+                  icon: "dataset_linked",
+                  title: "Combined dataset = stability",
+                  body: "Mixing Old and Normalized Tagalog (10,102 pairs) acted as a strong regularizer, resolving the loss-vs-BLEU divergence seen in isolated training.",
+                  delay: "120ms",
+                },
+                {
+                  icon: "align_justify_space_even",
+                  title: "COMET over loss",
+                  body: "Token-level loss alone was misleading. COMET-based checkpoint selection proved a more reliable guide for semantic translation quality on historical text.",
+                  delay: "240ms",
+                },
+              ].map(({ icon, title, body, delay }) => (
+                <div
+                  key={title}
+                  data-animate
+                  style={{ "--animate-delay": delay } as CSSVars}
+                  className="bg-surface p-8 ink-border shadow-sm space-y-3 transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
+                >
+                  <span className="material-symbols-outlined text-3xl text-primary-container">{icon}</span>
+                  <h4 className="text-body-lg font-medium">{title}</h4>
+                  <p className="text-caption text-on-surface-variant">{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* ── Translation Improvement ── */}
         <section className="space-y-8 py-12 ink-divider pb-24">
             <div data-animate className="space-y-4 max-w-2xl">
@@ -335,9 +384,29 @@ export default function Home() {
               </h2>
               <p className="text-body-md text-on-surface-variant">
                 Our curated dataset is drawn from Project Gutenberg&rsquo;s digitized versions of
-                Rizal&rsquo;s works and their verified English translations.
+                Rizal&rsquo;s works and their verified English translations — totalling
+                10,102 sentence pairs split 90/10 for training and evaluation.
               </p>
             </div>
+
+            {/* Stats strip */}
+            <div
+              data-animate
+              className="flex flex-col sm:flex-row gap-6 sm:gap-0 sm:divide-x sm:divide-outline-variant/40"
+            >
+              {[
+                { value: "10,102", label: "sentence pairs" },
+                { value: "90 / 10", label: "train / test split" },
+                { value: "2 novels", label: "Noli + El Fili" },
+                { value: "3 variants", label: "Old · Normalized · English" },
+              ].map(({ value, label }) => (
+                <div key={label} className="flex-1 text-center sm:px-6 space-y-1">
+                  <p className="text-headline-lg font-medium text-primary-container">{value}</p>
+                  <p className="text-caption text-on-surface-variant uppercase tracking-wide">{label}</p>
+                </div>
+              ))}
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[
                 {
@@ -389,10 +458,10 @@ export default function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { name: "BLEU",  desc: "N-gram precision against reference",    delay: "0ms" },
-              { name: "chrF",  desc: "Character n-gram F-score",              delay: "80ms" },
-              { name: "COMET", desc: "Neural MT quality estimation",           delay: "160ms" },
-              { name: "Human", desc: "Rated for naturalness & accuracy",       delay: "240ms" },
+              { name: "BLEU",      desc: "N-gram precision against reference",          delay: "0ms" },
+              { name: "chrF",      desc: "Character n-gram F-score",                   delay: "80ms" },
+              { name: "BERTScore", desc: "Contextual semantic similarity via BERT",     delay: "160ms" },
+              { name: "COMET",     desc: "Neural MT quality estimation (primary)",      delay: "240ms" },
             ].map(({ name, desc, delay }) => (
               <div
                 key={name}
@@ -404,6 +473,39 @@ export default function Home() {
                 <p className="text-caption text-on-surface-variant mt-2">{desc}</p>
               </div>
             ))}
+          </div>
+
+          {/* Model scores */}
+          <div
+            data-animate
+            style={{ "--animate-delay": "80ms" } as CSSVars}
+            className="bg-surface-container-low -mx-5 md:-mx-16 px-5 md:px-16 py-10 ink-border"
+          >
+            <div className="max-w-[1100px] mx-auto space-y-6">
+              <p className="text-label-sm text-secondary uppercase tracking-widest">Fine-tuned model · peak scores</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {[
+                  { metric: "BLEU",      score: "25.43",  sub: "token precision",           delay: "0ms" },
+                  { metric: "chrF",      score: "44.35",  sub: "char n-gram F-score",        delay: "80ms" },
+                  { metric: "BERTScore", score: "0.915",  sub: "semantic similarity",        delay: "160ms" },
+                  { metric: "COMET",     score: "0.676",  sub: "neural quality score",       delay: "240ms" },
+                ].map(({ metric, score, sub, delay }) => (
+                  <div
+                    key={metric}
+                    data-animate
+                    style={{ "--animate-delay": delay } as CSSVars}
+                    className="bg-surface p-6 ink-border text-center space-y-1 shadow-sm"
+                  >
+                    <p className="text-headline-lg font-medium text-primary-container">{score}</p>
+                    <p className="text-label-sm font-semibold">{metric}</p>
+                    <p className="text-caption text-on-surface-variant">{sub}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-caption text-on-surface-variant text-center">
+                Achieved by combining Old + Normalized Tagalog (10,102 sentence pairs) with COMET-based checkpoint selection.
+              </p>
+            </div>
           </div>
 
           <div
